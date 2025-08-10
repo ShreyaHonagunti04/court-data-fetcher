@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="background: #000; min-height: 100vh;">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="hero-section text-center py-5" style="background: #fff; border: 1.5px solid #222;">
+                <h1 class="display-4" style="color: #111;">
+                    <i class="fas fa-balance-scale me-3" style="color: #111;"></i>
+                    Court Data Fetcher
+                </h1>
+                <p class="lead" style="color: #222;">Access case information from Delhi High Court instantly</p>
+                <p class="text-dark">Enter case details below to fetch real-time case status, orders, and judgments</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="row mb-5" id="search-section">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow" style="background: #fff; border: 1.5px solid #222;">
+                <div class="card-header" style="background: #111; color: #fff;">
+                    <h4 class="mb-0">
+                        <i class="fas fa-search me-2" style="color: #fff;"></i>
+                        Case Search
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form id="searchForm">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="caseType" class="form-label">Case Type *</label>
+                                <select class="form-select" id="caseType" required>
+                                    <option value="">Select Case Type</option>
+                                    {% for case_type in case_types %}
+                                    <option value="{{ case_type }}">{{ case_type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="caseNumber" class="form-label">Case Number *</label>
+                                <input type="text" class="form-control" id="caseNumber" placeholder="e.g., 1234" required>
+                                <div class="form-text">Enter only the numeric part</div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="filingYear" class="form-label">Filing Year *</label>
+                                <input type="number" class="form-control" id="filingYear" 
+                                       min="1950" max="{{ current_year }}" 
+                                       placeholder="e.g., 2023" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-dark btn-lg w-100" style="background: #111; border: none; color: #fff;">
+                                    <i class="fas fa-search me-2" style="color: #fff;"></i>
+                                    Search Case
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="row mb-4 d-none" id="loadingSection">
+        <div class="col-12 text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Fetching case information...</p>
+        </div>
+    </div>
+
+    <!-- Error Alert -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div id="errorAlert" class="alert alert-danger d-none" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <span id="errorMessage"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="row mb-5 d-none fade-in" id="resultsSection">
+        <div class="col-12">
+            <div class="card shadow" style="background: #fff; border: 1.5px solid #222;">
+                <div class="card-header" style="background: #222; color: #fff;">
+                    <h4 class="mb-0">
+                        <i class="fas fa-file-alt me-2" style="color: #fff;"></i>
+                        Case Details
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Case Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 style="color: #111;">Case Information</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>Case ID:</th>
+                                    <td id="caseId">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Court:</th>
+                                    <td id="courtName">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Status:</th>
+                                    <td id="caseStatus">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Stage:</th>
+                                    <td id="caseStage">-</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 style="color: #111;">Parties</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>Petitioner:</th>
+                                    <td id="petitioner">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Respondent:</th>
+                                    <td id="respondent">-</td>
+                                </tr>
+                                <tr>
+                                    <th>Judge:</th>
+                                    <td id="judgeName">-</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Important Dates -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 style="color: #222;">Important Dates</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded" style="background: #f5f5f5; color: #111; border: 1px solid #222;">
+                                        <h6><i class="fas fa-calendar-plus me-2" style="color: #111;"></i>Filing Date</h6>
+                                        <p class="mb-0" id="filingDate">-</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded" style="background: #f5f5f5; color: #111; border: 1px solid #222;">
+                                        <h6><i class="fas fa-calendar-check me-2" style="color: #111;"></i>Next Hearing</h6>
+                                        <p class="mb-0" id="nextHearing">-</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Orders and Judgments -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 style="color: #222;">
+                                <i class="fas fa-file-pdf me-2" style="color: #111;"></i>
+                                Orders & Judgments
+                            </h5>
+                            <div id="ordersContainer">
+                                <p class="text-muted">No orders or judgments found.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Section -->
+    <div class="row mb-5 fade-in" id="history-section">
+        <div class="col-12">
+            <div class="card shadow" style="background: #fff; border: 1.5px solid #222;">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background: #111; color: #fff;">
+                    <h4 class="mb-0">
+                        <i class="fas fa-history me-2" style="color: #fff;"></i>
+                        Recent Searches
+                    </h4>
+                    <button class="btn btn-light btn-sm refresh-animate" onclick="loadHistory()" style="background: #fff; color: #111; border: 1px solid #222;">
+                        <i class="fas fa-refresh me-1"></i>Refresh
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="historyContainer">
+                        <p class="text-muted">Loading search history...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="row mb-5 fade-in" id="stats-section">
+        <div class="col-12">
+            <div class="card shadow" style="background: #fff; border: 1.5px solid #222;">
+                <div class="card-header" style="background: #222; color: #fff;">
+                    <h4 class="mb-0">
+                        <i class="fas fa-chart-bar me-2" style="color: #fff;"></i>
+                        Application Statistics
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row" id="statsContainer">
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 rounded fade-in" style="background: #f5f5f5; color: #111; border: 1px solid #222;">
+                                <h3 id="totalQueries">0</h3>
+                                <p class="mb-0">Total Queries</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 rounded fade-in" style="background: #f5f5f5; color: #111; border: 1px solid #222;">
+                                <h3 id="successfulQueries">0</h3>
+                                <p class="mb-0">Successful</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 rounded fade-in" style="background: #f5f5f5; color: #111; border: 1px solid #222;">
+                                <h3 id="uniqueCases">0</h3>
+                                <p class="mb-0">Unique Cases</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 rounded fade-in" style="background: #f5f5f5; color: #111; border: 1px solid #222;">
+                                <h3 id="totalOrders">0</h3>
+                                <p class="mb-0">Documents</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script>
+// Ensure this runs after app.js is loaded
+window.addEventListener('load', function() {
+    const filingYearInput = document.getElementById('filingYear');
+    if (filingYearInput) {
+        const currentYear = new Date().getFullYear();
+        filingYearInput.setAttribute('max', currentYear);
+    }
+    if (window.app) {
+        app.loadHistory();
+        app.loadStatistics();
+    } else {
+        // fallback if app is not ready
+        if (typeof loadHistory === 'function') loadHistory();
+        if (typeof loadStatistics === 'function') loadStatistics();
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,380 @@
+/* Ensure all main blocks have a white background and visible grey border */
+#search-section .card,
+#history-section .card,
+#stats-section .card {
+    background: #fff !important;
+    border: 3px solid #bbb !important;
+}
+#stats-section .card-body {
+    background: #fff !important;
+}
+/* Animation for refresh button */
+.refresh-animate:hover i {
+    animation: spinRefresh 0.7s linear infinite;
+}
+@keyframes spinRefresh {
+    100% { transform: rotate(360deg); }
+}
+
+/* Ensure Recent Searches block always has a visible grey border */
+#history-section .card {
+    border: 3px solid #bbb !important;
+}
+/* Ensure the case search block always has a visible grey border */
+#search-section .card {
+    border: 3px solid #bbb !important;
+}
+
+/* ===== Enhanced Modern Styles for Court Data Fetcher ===== */
+
+
+:root {
+    --primary-color: #0d47a1;
+    --secondary-color: #1976d2;
+    --success-color: #2e7d32;
+    --warning-color: #f57c00;
+    --danger-color: #d32f2f;
+    --info-color: #0288d1;
+    --light-color: #f5f5f5;
+    --dark-color: #212121;
+    --glass-bg: rgba(255,255,255,0.25);
+    --glass-border: rgba(255,255,255,0.18);
+    --neumorph-shadow: 8px 8px 24px #b8c6db, -8px -8px 24px #ffffff;
+    --gradient-1: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+    --gradient-2: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --navbar-glass: rgba(13, 71, 161, 0.7);
+}
+
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    min-height: 100vh;
+    line-height: 1.6;
+    color: #111;
+    overflow-x: hidden;
+}
+
+
+
+
+/* Hero Section - white block, black text */
+/* Hero Section - white block, black text, grey border */
+/* Hero Section - white block, black text, thicker grey border */
+.hero-section {
+    background: #fff !important;
+    color: #111;
+    border-radius: 24px !important;
+    border: 3px solid #bbb;
+    margin-bottom: 2rem;
+}
+.hero-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+.hero-section h1 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* Card Enhancements */
+
+
+/* Card - white block, black text */
+/* Card - white block, black text, grey border */
+.card {
+    border: 3px solid #bbb;
+    border-radius: 20px;
+    background: #fff;
+    color: #111;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+.card:hover {
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.12) !important;
+    border: 3px solid #888;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+    border-bottom: none;
+    padding: 1.25rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Form Styling */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 71, 161, 0.25);
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+
+
+
+/* Button Styling - black/white with animation */
+.btn-primary, .btn-dark {
+    background: #111 !important;
+    border: none !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+    transition: transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1), background 0.18s;
+}
+.btn-primary:hover, .btn-dark:hover {
+    background: #222 !important;
+    color: #fff !important;
+    transform: scale(1.06);
+    box-shadow: 0 6px 24px 0 rgba(0,0,0,0.18);
+}
+
+/* Loading Animation */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+.alert-danger {
+    background-color: #ffebee;
+    color: var(--danger-color);
+}
+
+.alert-success {
+    background-color: #e8f5e8;
+    color: var(--success-color);
+}
+
+/* Table Styling */
+.table th {
+    background-color: var(--light-color);
+    border: none;
+    font-weight: 600;
+    color: var(--dark-color);
+    width: 40%;
+}
+
+.table td {
+    border: none;
+    color: #495057;
+}
+
+/* Orders and Judgments */
+.order-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.order-item:hover {
+    border-color: var(--primary-color);
+}
+
+.order-date {
+    color: var(--info-color);
+    font-weight: 600;
+}
+
+.order-type {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.order-type-order {
+    background-color: #e3f2fd;
+    color: var(--info-color);
+}
+
+.order-type-judgment {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.order-type-document {
+    background-color: #fff3e0;
+    color: var(--warning-color);
+}
+
+/* PDF Download Button */
+.pdf-download {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.pdf-download:hover {
+    background: linear-gradient(45deg, #ee5a52, #ff6b6b);
+    transform: scale(1.05);
+    color: white;
+}
+
+/* History Section */
+.history-item {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    border-radius: 0 8px 8px 0;
+    padding: 1rem;
+}
+
+.history-success {
+    border-left-color: var(--success-color);
+}
+
+.history-error {
+    border-left-color: var(--danger-color);
+}
+
+.history-timestamp {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Statistics Cards */
+.stats-card {
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.stats-card h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 1rem !important;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .stats-card h3 {
+        font-size: 2rem;
+    }
+}
+
+
+
+/* Navbar - black background, white text */
+.navbar {
+    background: #000 !important;
+    border-bottom: 1.5px solid #222;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.navbar-brand {
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    color: #fff !important;
+}
+.navbar-nav .nav-link {
+    font-weight: 600;
+    margin: 0 0.7rem;
+    border-radius: 8px;
+    color: #fff !important;
+}
+.navbar-nav .nav-link:hover {
+    background: #222;
+    color: #fff !important;
+}
+
+
+
+
+footer {
+    border-top: 1.5px solid #222;
+    margin-top: 4rem;
+    background: #000;
+    color: #fff;
+    box-shadow: 0 -4px 24px 0 rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+}
+footer p, footer small {
+    color: #fff;
+    opacity: 0.97;
+    text-shadow: none;
+}
+
+
+
+
+/* Scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+/* Custom scrollbar - simple black/white */
+::-webkit-scrollbar {
+    width: 10px;
+    background: #000;
+}
+::-webkit-scrollbar-track {
+    background: #111;
+    border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #0004;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
